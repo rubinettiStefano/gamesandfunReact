@@ -5,8 +5,8 @@ import { useState } from "react";
 
 function App() {
   
-  const [showAnagrafe,setShowAnagrafe] = useState(false);
-  const [showCalcolatrice,setShowCalcolatrice] = useState(true);
+  const [showAnagrafe,setShowAnagrafe] = useState(true);
+  const [showCalcolatrice,setShowCalcolatrice] = useState(false);
 
   function mostraSolo(e)
   {
