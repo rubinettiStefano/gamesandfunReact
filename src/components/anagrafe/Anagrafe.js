@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SinglePerson from "./SinglePerson";
+import axios from "axios";
 
 const Anagrafe = ()=>
 {
@@ -14,12 +15,28 @@ const Anagrafe = ()=>
   // const [pers1,setPers1] = useState({name:"Stefano",surname:"Rubinetti",age:28});
   // const [pers2,setPers2] = useState({name:"Niko",surname:"Ricci",age:27});
 
-  const [people,setPeople] = useState([
+  //Tutto quello che vedete iniziare con use, useState
+  //viene detto HOOK
+  //ha un comportamento diverso da tutto il resto che viene gestito da react
+  const [people,setPeople] = useState([]);
 
-      {id:1,name:"Stefano",surname:"Rubinetti",age:28},
-      {id:2,name:"Niko",surname:"Ricci",age:27},
-      {id:3,name:"Giovanni",surname:"Di Pietrantonio",age:23}
-    ]
+  //init()
+  useEffect(
+    () =>
+    {
+      //leggo da back-end e imposto valore dello state
+      //fa una chiamata get a url tra tonde
+      //se mettiamo lo slash è come scrive base-url/people
+      //base-url = il proxy ( o quello vero se no proxy)
+      //una chiamata GET a http://localhost:8080
+      axios.get("/people").then(
+        response =>
+        {
+          setPeople(response.data);
+        }
+      )
+    },
+    []
   );
 
   function updatePers(newVersion)
