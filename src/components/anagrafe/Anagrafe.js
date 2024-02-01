@@ -54,7 +54,12 @@ const Anagrafe = ()=>
   }
   return(
     <>
-      <button onClick={toggleForm} > {!showForm ? "Mostra Form" : "Nascondi Form"}</button>
+      <button onClick={toggleForm} > 
+        { 
+            !showForm   ? 
+            <img width={50} height={50} src="https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQ55G7DUmQAh_Y5pBaCZ2FSKRTtgvkgUeptxRQjFOcadJW34oHyt6c-RIJHxajeOD_-"/> :
+            <img width={50} height={50} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHJeYuLS5xUCWSsSyGnKtgMbL417vXNv8Sw&usqp=CAU"/>
+        }</button>
       {showForm &&<PersonForm notifyFather={notifyFather} />}
       {people.map(pers=><SinglePerson pers={pers} />)}
     </>
