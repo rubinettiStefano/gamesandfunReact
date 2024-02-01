@@ -2,34 +2,17 @@ import { useEffect, useState } from "react";
 import SinglePerson from "./SinglePerson";
 import axios from "axios";
 import PersonForm from "./PersonForm";
+import SinglePersonModifiable from "./SinglePersonModifiable";
 
 const Anagrafe = ()=>
 {
-  // const [name1,setName1] = useState("Stefano");
-  // const [surname1,setSurname1] = useState("Rubinetti");
-  // const [age1,setAge1] = useState(28);
-
-  // const [name2,setName2] = useState("Niko");
-  // const [surname2,setSurname2] = useState("Ricci");
-  // const [age2,setAge2] = useState(27);
-
-  // const [pers1,setPers1] = useState({name:"Stefano",surname:"Rubinetti",age:28});
-  // const [pers2,setPers2] = useState({name:"Niko",surname:"Ricci",age:27});
-
-  //Tutto quello che vedete iniziare con use, useState
-  //viene detto HOOK
-  //ha un comportamento diverso da tutto il resto che viene gestito da react
   const [people,setPeople] = useState([]);
   const [showForm,setShowForm] = useState(false);
+  const [indexToModify,setIndex] = useState(-1);
   //init()
   useEffect(
     () =>
     {
-      //leggo da back-end e imposto valore dello state
-      //fa una chiamata get a url tra tonde
-      //se mettiamo lo slash è come scrive base-url/people
-      //base-url = il proxy ( o quello vero se no proxy)
-      //una chiamata GET a http://localhost:8080
       axios.get("/people").then(
         response =>
         {
@@ -47,6 +30,24 @@ const Anagrafe = ()=>
     setPeople(clone);
   }
 
+  function padreHoModificatoQuestaPersona(pers)
+  {
+    let clone = [...people];
+    let pos = clone.findIndex(p=>p.id==pers.id);
+    clone[pos] = pers;
+    setPeople(clone);
+  }
+
+  function rendiFiglioAllaPosizioneModificabile(ind)
+  {
+      setIndex(ind);
+  }
+  function annullaModifiche()
+  {
+    setIndex(-1);
+  }
+
+
   function toggleForm()
   {
     let newShowForm = !showForm;//inverte il booleano
@@ -61,7 +62,9 @@ const Anagrafe = ()=>
             <img width={50} height={50} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHJeYuLS5xUCWSsSyGnKtgMbL417vXNv8Sw&usqp=CAU"/>
         }</button>
       {showForm &&<PersonForm notifyFather={notifyFather} />}
-      {people.map(pers=><SinglePerson pers={pers} />)}
+      <div className="w3-row-padding">
+        {people.map((pers,i)=>i==indexToModify ?  <SinglePersonModifiable padreHoModificatoQuestaPersona={padreHoModificatoQuestaPersona} annulla={annullaModifiche} pers={pers} />   : <SinglePerson pers={pers} index={i} update={rendiFiglioAllaPosizioneModificabile}/>)}
+      </div>
     </>
   );
 
