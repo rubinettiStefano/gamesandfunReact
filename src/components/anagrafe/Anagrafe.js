@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SinglePerson from "./SinglePerson";
 import axios from "axios";
+import PersonForm from "./PersonForm";
 
 const Anagrafe = ()=>
 {
@@ -19,7 +20,7 @@ const Anagrafe = ()=>
   //viene detto HOOK
   //ha un comportamento diverso da tutto il resto che viene gestito da react
   const [people,setPeople] = useState([]);
-
+  const [showForm,setShowForm] = useState(false);
   //init()
   useEffect(
     () =>
@@ -39,25 +40,23 @@ const Anagrafe = ()=>
     []
   );
 
-  function updatePers(newVersion)
+  function notifyFather(pers)
   {
-    //1)trovo posizione della persona nel vettore grazie al suo id
-    // let pos = -1;
-    // for(let i=0;i<people.length;i++)
-    //   if(people[i].id==newVersion.id)
-    //     pos =i;
-    let pos = people.findIndex(p=> p.id==newVersion.id);
-    //2)clono il vettore
-    let newPeopleVersion = [...people];
-    //3)sovrascrivo la persona nel vettore clonato
-    newPeopleVersion[pos]=newVersion;
-    //sovrascrivo il vettore con il setter
-    setPeople(newPeopleVersion);
+    let clone = [...people];
+    clone.push(pers);
+    setPeople(clone);
   }
 
+  function toggleForm()
+  {
+    let newShowForm = !showForm;//inverte il booleano
+    setShowForm(newShowForm);
+  }
   return(
     <>
-      {people.map(pers=><SinglePerson pers={pers} updatePers={updatePers}/>)}
+      <button onClick={toggleForm} > {!showForm ? "Mostra Form" : "Nascondi Form"}</button>
+      {showForm &&<PersonForm notifyFather={notifyFather} />}
+      {people.map(pers=><SinglePerson pers={pers} />)}
     </>
   );
 
