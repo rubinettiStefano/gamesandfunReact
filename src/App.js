@@ -3,6 +3,8 @@ import Anagrafe from "./components/anagrafe/Anagrafe";
 import Calcolatrice from "./components/calcolatrice/Calcolatrice";
 import { useState } from "react";
 import Paperino from "./components/paperino/Paperino";
+import axios from "axios";
+
 
 function App() {
   

@@ -6,6 +6,7 @@ import SinglePersonModifiable from "./SinglePersonModifiable";
 
 const Anagrafe = ()=>
 {
+  
   const [people,setPeople] = useState([]);
   const [showForm,setShowForm] = useState(false);
   const [indexToModify,setIndex] = useState(-1);
@@ -38,6 +39,17 @@ const Anagrafe = ()=>
     setPeople(clone);
   }
 
+
+  function diAMioPadreDiCancellarmi(ind)
+  {
+    let clone = [...people];
+    let personToDelete = clone[ind];
+    let id = personToDelete.id;
+    axios.delete(`/people/${id}`);
+    clone.splice(ind,1);//rimuove, a partire dall'indice ind, 1 elemento
+    setPeople(clone);
+  }
+
   function rendiFiglioAllaPosizioneModificabile(ind)
   {
       setIndex(ind);
@@ -63,7 +75,7 @@ const Anagrafe = ()=>
         }</button>
       {showForm &&<PersonForm notifyFather={notifyFather} />}
       <div className="w3-row-padding">
-        {people.map((pers,i)=>i==indexToModify ?  <SinglePersonModifiable padreHoModificatoQuestaPersona={padreHoModificatoQuestaPersona} annulla={annullaModifiche} pers={pers} />   : <SinglePerson pers={pers} index={i} update={rendiFiglioAllaPosizioneModificabile}/>)}
+        {people.map((pers,i)=>i==indexToModify ?  <SinglePersonModifiable padreHoModificatoQuestaPersona={padreHoModificatoQuestaPersona} annulla={annullaModifiche} pers={pers} />   : <SinglePerson pers={pers} index={i} update={rendiFiglioAllaPosizioneModificabile} delete={diAMioPadreDiCancellarmi}/>)}
       </div>
     </>
   );
