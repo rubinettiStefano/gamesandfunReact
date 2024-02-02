@@ -3,10 +3,11 @@ import SinglePerson from "./SinglePerson";
 import axios from "axios";
 import PersonForm from "./PersonForm";
 import SinglePersonModifiable from "./SinglePersonModifiable";
+import { useNavigate } from "react-router-dom";
 
 const Anagrafe = ()=>
 {
-  
+  let navigate = useNavigate();
   const [people,setPeople] = useState([]);
   const [showForm,setShowForm] = useState(false);
   const [indexToModify,setIndex] = useState(-1);
@@ -34,6 +35,7 @@ const Anagrafe = ()=>
     clone.push(pers);
     setPeople(clone);
     setPeopleToShow(clone);
+    navigate("/calcolatrice");
   }
 
   function padreHoModificatoQuestaPersona(pers)
