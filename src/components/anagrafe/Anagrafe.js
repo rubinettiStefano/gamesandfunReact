@@ -10,6 +10,9 @@ const Anagrafe = ()=>
   const [people,setPeople] = useState([]);
   const [showForm,setShowForm] = useState(false);
   const [indexToModify,setIndex] = useState(-1);
+  const [peopleToShow,setPeopleToShow] = useState([]);
+
+  const [searchKey,setSearchKey] = useState("");
   //init()
   useEffect(
     () =>
@@ -18,6 +21,7 @@ const Anagrafe = ()=>
         response =>
         {
           setPeople(response.data);
+          setPeopleToShow(response.data);
         }
       )
     },
@@ -29,6 +33,7 @@ const Anagrafe = ()=>
     let clone = [...people];
     clone.push(pers);
     setPeople(clone);
+    setPeopleToShow(clone);
   }
 
   function padreHoModificatoQuestaPersona(pers)
@@ -40,14 +45,15 @@ const Anagrafe = ()=>
   }
 
 
-  function diAMioPadreDiCancellarmi(ind)
+  function diAMioPadreDiCancellarmi(id)
   {
     let clone = [...people];
-    let personToDelete = clone[ind];
-    let id = personToDelete.id;
+    let pos = clone.findIndex(p=>p.id==id);
     axios.delete(`/people/${id}`);
-    clone.splice(ind,1);//rimuove, a partire dall'indice ind, 1 elemento
+    clone.splice(pos,1);//rimuove, a partire dall'indice ind, 1 elemento
     setPeople(clone);
+    setPeopleToShow(clone);
+    setSearchKey("");
   }
 
   function rendiFiglioAllaPosizioneModificabile(ind)
@@ -65,10 +71,39 @@ const Anagrafe = ()=>
     let newShowForm = !showForm;//inverte il booleano
     setShowForm(newShowForm);
   }
+
+  function filterPeople(e)
+  {
+    let key =e.target.value; 
+    setSearchKey(key);
+    filterPeopleByKey(key);
+  }
+
+  function filterPeopleByKey(key)
+  {
+    if(key || key==="")
+      setPeopleToShow(people.filter(p=> p.name.toLowerCase().includes(key.toLowerCase()) || p.surname.toLowerCase().includes(key.toLowerCase())  ));
+    else
+      setPeopleToShow(people.filter(p=> p.name.toLowerCase().includes(searchKey.toLowerCase()) || p.surname.toLowerCase().includes(searchKey.toLowerCase())  ));
+
+  }
+
+  function clearFilter()
+  {
+    setPeopleToShow(people);
+    setSearchKey("");
+  }
+
   return(
     <>
-      <div className="row justify-content-center">
-        <button className="col-1" onClick={toggleForm} > 
+      <div className="row">
+        <div className="col-3 ps-4">
+          <div className="input-group mb-3">
+            <input value={searchKey} onChange={filterPeople} type="text" className="form-control" placeholder="Nome/Cognome" aria-label="Recipient's username" aria-describedby="button-addon2" />
+            <button onClick={clearFilter} className="btn btn-outline-secondary" type="button" id="button-addon2">X</button>
+          </div>
+        </div>
+        <button className="col-1 offset-2" onClick={toggleForm} > 
           { 
               !showForm   ? 
               <img width={50} height={50} src="https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQ55G7DUmQAh_Y5pBaCZ2FSKRTtgvkgUeptxRQjFOcadJW34oHyt6c-RIJHxajeOD_-"/> :
@@ -77,7 +112,7 @@ const Anagrafe = ()=>
       </div>
       {showForm &&<PersonForm notifyFather={notifyFather} />}
       <div className="row">
-        {people.map((pers,i)=>i==indexToModify ?  <SinglePersonModifiable padreHoModificatoQuestaPersona={padreHoModificatoQuestaPersona} annulla={annullaModifiche} pers={pers} />   : <SinglePerson pers={pers} index={i} update={rendiFiglioAllaPosizioneModificabile} delete={diAMioPadreDiCancellarmi}/>)}
+        {peopleToShow.map((pers,i)=>i==indexToModify ?  <SinglePersonModifiable key={pers.id}  padreHoModificatoQuestaPersona={padreHoModificatoQuestaPersona} annulla={annullaModifiche} pers={pers} />   : <SinglePerson key={pers.id} pers={pers} index={i} update={rendiFiglioAllaPosizioneModificabile} delete={diAMioPadreDiCancellarmi}/>)}
       </div>
     </>
   );

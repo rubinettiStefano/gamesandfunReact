@@ -6,7 +6,7 @@ const Navbar = (props)=>
 
   return(
     <>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg bg-body-tertiary mb-3">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">Homepage</Link> 
                 <ul className="navbar-nav">

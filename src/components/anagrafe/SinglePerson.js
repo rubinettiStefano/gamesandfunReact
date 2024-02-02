@@ -8,7 +8,7 @@ const SinglePerson = (props)=>
 
   function diAMioPadreDiCancellarmi()
   {
-    props.delete(props.index)
+    props.delete(props.pers.id)
   }
 
   return(
