@@ -67,14 +67,16 @@ const Anagrafe = ()=>
   }
   return(
     <>
-      <button onClick={toggleForm} > 
-        { 
-            !showForm   ? 
-            <img width={50} height={50} src="https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQ55G7DUmQAh_Y5pBaCZ2FSKRTtgvkgUeptxRQjFOcadJW34oHyt6c-RIJHxajeOD_-"/> :
-            <img width={50} height={50} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHJeYuLS5xUCWSsSyGnKtgMbL417vXNv8Sw&usqp=CAU"/>
-        }</button>
+      <div className="row justify-content-center">
+        <button className="col-1" onClick={toggleForm} > 
+          { 
+              !showForm   ? 
+              <img width={50} height={50} src="https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQ55G7DUmQAh_Y5pBaCZ2FSKRTtgvkgUeptxRQjFOcadJW34oHyt6c-RIJHxajeOD_-"/> :
+              <img width={50} height={50} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHJeYuLS5xUCWSsSyGnKtgMbL417vXNv8Sw&usqp=CAU"/>
+          }</button>
+      </div>
       {showForm &&<PersonForm notifyFather={notifyFather} />}
-      <div className="w3-row-padding">
+      <div className="row">
         {people.map((pers,i)=>i==indexToModify ?  <SinglePersonModifiable padreHoModificatoQuestaPersona={padreHoModificatoQuestaPersona} annulla={annullaModifiche} pers={pers} />   : <SinglePerson pers={pers} index={i} update={rendiFiglioAllaPosizioneModificabile} delete={diAMioPadreDiCancellarmi}/>)}
       </div>
     </>

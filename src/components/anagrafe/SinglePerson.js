@@ -13,11 +13,15 @@ const SinglePerson = (props)=>
 
   return(
     <>
-    <div className="w3-card-4 w3-col m4 l4 w3-center">
-      <h1>{props.pers.name} {props.pers.surname} </h1>
-      <h2>{props.pers.age} </h2> 
-      <input class="w3-button" type="button" value="MODIFICA" onClick={diAMioPadreDiModificarmi} />
-      <input class="w3-button" type="button" value="CANCELLA" onClick={diAMioPadreDiCancellarmi} />
+    <div className="col-4 p-4">
+      <div className="card text-center" >
+        <div className="card-body">
+          <h5 className="card-title">{props.pers.name} {props.pers.surname}</h5>
+          <p className="card-text">My age is: {props.pers.age}</p>
+          <input className="btn btn-primary me-3" type="button" value="MODIFICA" onClick={diAMioPadreDiModificarmi} />
+          <input className="btn btn-danger" type="button" value="CANCELLA" onClick={diAMioPadreDiCancellarmi} />
+        </div>
+      </div>
     </div>
     </>
 
